@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, Dimensions } from 'react-native';
-import { Picker } from '@react-native-picker/picker';
+import { addCustomers } from '../services/masters';
 
 var width = Dimensions.get('window').width
 
@@ -9,6 +9,8 @@ const CustomerForm = () => {
   const [gst, setGst] = useState('');
   const [email, setEmail] = useState('');
   const [mobile, setMobile] = useState('');
+  const [address, setAddress] = useState('');
+
 
   return (
     <View style={styles.container}>
@@ -30,12 +32,17 @@ const CustomerForm = () => {
       </View>
 
       <View style={styles.inputContainer}>
+        <Text style={styles.label}>Address</Text>
+        <TextInput style={styles.input} placeholder="Enter email" keyboardType='email-address' onChangeText={(text) => setAddress(text)} />
+      </View>
+
+      <View style={styles.inputContainer}>
         <Text style={styles.label}>Mobile</Text>
         <TextInput style={styles.input} placeholder="Enter mobile number" keyboardType='numeric' onChangeText={(text) => setMobile(text)} />
       </View>
 
       <Button title="Submit" onPress={() => {
-        addEmployee({ name: name, role: selectedRole, email: email, mobile: mobile })
+        addCustomers({ name: name, gst: gst, email: email, mobile: mobile, address: address })
       }} style={styles.button} />
     </View>
   );
