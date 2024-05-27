@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "48695709595",
+    "project_id": "pentafox-pm",
+    "storage_bucket": "pentafox-pm.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:48695709595:android:bd30bf20a6ef74b3439b3e",
+        "android_client_info": {
+          "package_name": "com.anonymous.pentafoxpm"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA6YnwCb1BC5zzPbdGgKP7RhjR5xuDHaQc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
