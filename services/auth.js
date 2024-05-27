@@ -1,34 +1,48 @@
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
-const auth = getAuth();
+// Import necessary functions from Firebase Auth SDK
+import { auth } from './firebaseConfig'; // Import auth instance from firebaseConfig.js
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged } from 'firebase/auth';
 
-export async function signIn({ email, password }) {
-    createUserWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
-            const user = userCredential.user;
-        })
-        .catch((error) => {
-            const errorCode = error.code;
-            const errorMessage = error.message;
-        });
-}
-
+// Sign up function
 export async function signUp({ email, password }) {
-    signInWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
-            const user = userCredential.user;
-        })
-        .catch((error) => {
-            const errorCode = error.code;
-            const errorMessage = error.message;
-        });
+  try {
+    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+    const user = userCredential.user;
+    // Handle user object as needed
+    return user;
+  } catch (error) {
+    const errorCode = error.code;
+    const errorMessage = error.message;
+    // Handle errors here
+    console.error(`Error [${errorCode}]: ${errorMessage}`);
+    throw error;
+  }
 }
 
-export async function isLoggedIn() {
+// Sign in function
+export async function signIn({ email, password }) {
+  try {
+    const userCredential = await signInWithEmailAndPassword(auth, email, password);
+    const user = userCredential.user;
+    // Handle user object as needed
+    return user;
+  } catch (error) {
+    const errorCode = error.code;
+    const errorMessage = error.message;
+    // Handle errors here
+    console.error(`Error [${errorCode}]: ${errorMessage}`);
+    throw error;
+  }
+}
+
+// Check if user is logged in
+export function isLoggedIn() {
+  return new Promise((resolve, reject) => {
     onAuthStateChanged(auth, (user) => {
-        if (user) {
-            const uid = user.uid;
-            return user;
-        } else {
-        }
-    });
+      if (user) {
+        resolve(user);
+      } else {
+        resolve(null);
+      }
+    }, reject);
+  });
 }
