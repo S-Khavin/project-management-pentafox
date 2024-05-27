@@ -3,6 +3,8 @@ import { Button, StyleSheet, Text, View } from 'react-native';
 import { addEmployee, addProjectStatus } from './services/masters';
 import BottomTabNavigation from './Components/BottomNavBar';
 import EmployeeForm from './screens/EmployeeForm';
+import ProjectForm from './screens/ProjectForm';
+import ProjectCustomerForm from './screens/ProjectCustomerForm';
 export default function App() {
   return (
     // <View style={styles.container}>
@@ -16,12 +18,14 @@ export default function App() {
     // </View>
 
     <View style={styles.safe_area}>
-      {/* <View style={{ flex: 1, alignItems: "center", justifyContent: "center", }}>
-        <EmployeeForm/>
+      <View style={{ flex: 1, alignItems: "center", justifyContent: "center", }}>
+        {/* <EmployeeForm/> */}
+        {/* <ProjectForm></ProjectForm> */}
+        <ProjectCustomerForm></ProjectCustomerForm>
       </View>
       <View>
-        <BottomTabNavigation />
-      </View> */}
+        {/* <BottomTabNavigation /> */}
+      </View>
     </View>
   );
 }
