@@ -90,6 +90,7 @@ const ProjectCustomerForm = () => {
             <Button title="Continue" onPress={() => {
                 //Navigate to ProjectForm
             }} style={styles.button} />
+
         </View>
     );
 };

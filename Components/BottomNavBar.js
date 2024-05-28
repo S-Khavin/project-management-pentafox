@@ -1,16 +1,21 @@
 import React, { useState } from "react";
 import { View, Text, TouchableOpacity, StyleSheet, Image } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import { useNavigation } from '@react-navigation/native';
 
 const BottomTabNavigation = () => {
   const [selectedTab, setSelectedTab] = useState('Home');
+  const navigation = useNavigation();
 
   return (
     <View style={styles.container}>
       <View style={styles.tabContainer}>
         <TouchableOpacity
           style={styles.tabItem}
-          onPress={() => setSelectedTab('Home')}
+          onPress={() => {
+            setSelectedTab('Home');
+            navigation.navigate('Employee');
+          }}
         >
           <Ionicons
             name="home-outline"
@@ -20,20 +25,19 @@ const BottomTabNavigation = () => {
           <Text style={{ ...styles.label, color: selectedTab === 'Home' ? '#ee2524' : 'black' }}>Home</Text>
         </TouchableOpacity>
 
-
-        <TouchableOpacity
-          style={styles.tabItem}
-        >
-        <Image
-          source={require('../assets/logo.png')}
-          style={styles.iconContainer}
-        />
-
+        <TouchableOpacity style={styles.tabItem}>
+          <Image
+            source={require('../assets/logo.png')}
+            style={styles.iconContainer}
+          />
         </TouchableOpacity>
 
         <TouchableOpacity
           style={styles.tabItem}
-          onPress={() => setSelectedTab('Message')}
+          onPress={() => {
+            setSelectedTab('Message');
+            navigation.navigate('Customer');
+          }}
         >
           <Ionicons
             name="chatbubble-outline"
@@ -49,8 +53,10 @@ const BottomTabNavigation = () => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    justifyContent: 'flex-end',
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
     backgroundColor: 'white',
   },
   tabContainer: {
@@ -58,7 +64,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-evenly',
     alignItems: 'center',
     height: 60,
-    backgroundColor: 'white',
     borderTopWidth: 1,
     borderTopColor: '#ccc',
   },
@@ -74,7 +79,7 @@ const styles = StyleSheet.create({
     width: 70,
     top: -30,
     borderRadius: 16,
-  }
+  },
 });
 
 export default BottomTabNavigation;

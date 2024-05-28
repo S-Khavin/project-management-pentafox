@@ -2,7 +2,9 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, Dimensions } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import { addEmployee } from '../services/masters';
-var width = Dimensions.get('window').width
+import BottomTabNavigation from '../Components/BottomNavBar';
+
+var width = Dimensions.get('window').width;
 
 const EmployeeForm = () => {
   const [selectedRole, setSelectedRole] = useState('');
@@ -47,7 +49,7 @@ const EmployeeForm = () => {
       </View>
 
       <Button title="Submit" onPress={() => {
-        addEmployee({ name: name, role: selectedRole, email: email, mobile: mobile })
+        addEmployee({ name: name, role: selectedRole, email: email, mobile: mobile });
       }} style={styles.button} />
     </View>
   );
@@ -71,7 +73,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   inputContainer: {
-    width: width-50,
+    width: width - 50,
     marginBottom: 15,
   },
   label: {
@@ -99,7 +101,7 @@ const styles = StyleSheet.create({
   },
   button: {
     marginTop: 20,
-  }
+  },
 });
 
 export default EmployeeForm;

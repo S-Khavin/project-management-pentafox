@@ -48,7 +48,6 @@ const ProjectForm = ({ c_name, c_email, c_gst, c_mobile }) => {
         setSelectedEmployees(selected_employees);
     };
 
-
     return (
         <View style={styles.container}>
             <Text style={styles.header}>Project Details</Text>
@@ -95,10 +94,9 @@ const ProjectForm = ({ c_name, c_email, c_gst, c_mobile }) => {
             </View>
 
             <MultiSelect
-                // hideTags
                 items={employees}
                 uniqueKey="id"
-                ref={(component) => { this.multiSelect = component }}
+                ref={multiSelect}
                 onSelectedItemsChange={onSelectedItemsChange}
                 selectedItems={p_team}
                 selectText="Pick Employees "
