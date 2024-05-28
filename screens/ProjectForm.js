@@ -1,53 +1,34 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, Dimensions, Platform } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import { addEmployee } from '../services/masters';
 import MultiSelect from 'react-native-multiple-select';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import { addProject, getEmployeesDetails } from '../services/project';
 
 var width = Dimensions.get('window').width
 
-
-const employees = [{
-    id: '92iijs7yta',
-    name: 'Ondo'
-}, {
-    id: 'a0s0a8ssbsd',
-    name: 'Ogun'
-}, {
-    id: '16hbajsabsd',
-    name: 'Calabar'
-}, {
-    id: 'nahs75a5sg',
-    name: 'Lagos'
-}, {
-    id: '667atsas',
-    name: 'Maiduguri'
-}, {
-    id: 'hsyasajs',
-    name: 'Anambra'
-}, {
-    id: 'djsjudksjd',
-    name: 'Benue'
-}, {
-    id: 'sdhyaysdj',
-    name: 'Kaduna'
-}, {
-    id: 'suudydjsjd',
-    name: 'Abuja'
-}
-];
-
-const ProjectForm = () => {
-    const [name, setName] = useState('');
-    const [description, setDescription] = useState('');
-    const [date, setDate] = useState(new Date());
+const ProjectForm = ({ c_name, c_email, c_gst, c_mobile }) => {
+    const [p_name, setName] = useState('');
+    const [p_description, setDescription] = useState('');
+    const [p_date, setDate] = useState(new Date());
     const [open, setOpen] = useState(false);
-    const [owner, setOwner] = useState('');
-    const [selectedEmpoloyees, setSelectedEmployees] = useState([]);
+    const [p_owner, setOwner] = useState('');
+    const [employees, setEmployees] = useState([])
+    const [p_team, setSelectedEmployees] = useState([]);
     const multiSelect = useRef(null);
-    const [status, setStatus] = useState('');
-    const [type, setType] = useState('');
+    const [p_status, setStatus] = useState('');
+    const [p_type, setType] = useState('');
+
+    useEffect(() => {
+        async function fetchEmployees() {
+            const employeesData = await getEmployeesDetails();
+            setEmployees(employeesData);
+            console.log(employeesData);
+        }
+        fetchEmployees();
+    }, [])
+
 
     const showDatePicker = () => {
         setOpen(true);
@@ -58,12 +39,13 @@ const ProjectForm = () => {
     };
 
     const handleDateChange = (event, selectedDate) => {
-        const currentDate = selectedDate || date;
+        const currentDate = selectedDate || p_date;
         setDate(currentDate);
         hideDatePicker();
-      };
-    const onSelectedItemsChange = (selectedEmpoloyees) => {
-        setSelectedEmployees(selectedEmpoloyees);
+    };
+
+    const onSelectedItemsChange = (selected_employees) => {
+        setSelectedEmployees(selected_employees);
     };
 
 
@@ -73,14 +55,14 @@ const ProjectForm = () => {
 
             <View style={styles.inputContainer}>
                 <Text style={styles.label}>Name</Text>
-                <TextInput style={styles.input} placeholder="Project name" onChangeText={(text) => setName(text)} />
+                <TextInput style={styles.input} placeholder="Project p_name" onChangeText={(text) => setName(text)} />
             </View>
 
             <View style={styles.inputContainer}>
                 <Text style={styles.label}>Description</Text>
                 <TextInput
-                        editable
-                        multiline                
+                    editable
+                    multiline
                     numberOfLines={5} maxLength={200}
                     style={styles.input} placeholder="Project Description" onChangeText={(text) => setDescription(text)} />
             </View>
@@ -89,8 +71,8 @@ const ProjectForm = () => {
             {open && (
                 <DateTimePicker
                     testID="dateTimePicker"
-                    value={date}
-                    mode="date"
+                    value={p_date}
+                    mode="p_date"
                     is24Hour={true}
                     display={Platform.OS === 'ios' ? 'spinner' : 'default'}
                     onChange={handleDateChange}
@@ -101,7 +83,7 @@ const ProjectForm = () => {
                 <Text style={styles.label}>Owner</Text>
                 <View style={styles.pickerContainer}>
                     <Picker
-                        selectedValue={owner}
+                        selectedValue={p_owner}
                         onValueChange={(itemValue) => setOwner(itemValue)}
                         style={styles.picker}
                     >
@@ -118,21 +100,20 @@ const ProjectForm = () => {
                 uniqueKey="id"
                 ref={(component) => { this.multiSelect = component }}
                 onSelectedItemsChange={onSelectedItemsChange}
-                selectedItems={selectedEmpoloyees}
+                selectedItems={p_team}
                 selectText="Pick Employees "
                 searchInputPlaceholderText="Search Items..."
                 onChangeInput={(text) => console.log(text)}
             />
             <View>
-                {multiSelect.current && multiSelect.current.getSelectedItemsExt(selectedEmpoloyees)}
+                {multiSelect.current && multiSelect.current.getSelectedItemsExt(p_team)}
             </View>
-
 
             <View style={styles.inputContainer}>
                 <Text style={styles.label}>Project Status</Text>
                 <View style={styles.pickerContainer}>
                     <Picker
-                        selectedValue={status}
+                        selectedValue={p_status}
                         onValueChange={(itemValue) => setStatus(itemValue)}
                         style={styles.picker}
                     >
@@ -148,7 +129,7 @@ const ProjectForm = () => {
                 <Text style={styles.label}>Project Type</Text>
                 <View style={styles.pickerContainer}>
                     <Picker
-                        selectedValue={type}
+                        selectedValue={p_type}
                         onValueChange={(itemValue) => setType(itemValue)}
                         style={styles.picker}
                     >
@@ -158,8 +139,8 @@ const ProjectForm = () => {
                 </View>
             </View>
 
-
             <Button title="Submit" onPress={() => {
+                addProject({ c_name: c_name, c_email: c_email, c_gst: c_gst, c_mobile: c_mobile, p_name: p_name, p_date: p_date, p_description: p_description, p_owner: p_owner, p_status: p_status, p_team: p_team, p_type: p_type })
             }} style={styles.button} />
         </View>
     );
