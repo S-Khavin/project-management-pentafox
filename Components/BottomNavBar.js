@@ -1,21 +1,37 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { View, Text, TouchableOpacity, StyleSheet, Image } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 
 const BottomTabNavigation = () => {
   const [selectedTab, setSelectedTab] = useState('Home');
   const navigation = useNavigation();
+  const route = useRoute();
+
+  useEffect(() => {
+    if (route.name === 'Employee') {
+      setSelectedTab('Home');
+    } else if (route.name === 'Customer') {
+      setSelectedTab('Message');
+    }
+  }, [route.name]);
+
+  const handleHomePress = () => {
+    setSelectedTab('Home');
+    navigation.navigate('Employee');
+  };
+
+  const handleMessagePress = () => {
+    setSelectedTab('Message');
+    navigation.navigate('Customer');
+  };
 
   return (
     <View style={styles.container}>
       <View style={styles.tabContainer}>
         <TouchableOpacity
           style={styles.tabItem}
-          onPress={() => {
-            setSelectedTab('Home');
-            navigation.navigate('Employee');
-          }}
+          onPress={handleHomePress}
         >
           <Ionicons
             name="home-outline"
@@ -34,10 +50,7 @@ const BottomTabNavigation = () => {
 
         <TouchableOpacity
           style={styles.tabItem}
-          onPress={() => {
-            setSelectedTab('Message');
-            navigation.navigate('Customer');
-          }}
+          onPress={handleMessagePress}
         >
           <Ionicons
             name="chatbubble-outline"

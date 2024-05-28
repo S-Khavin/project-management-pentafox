@@ -2,20 +2,21 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, Dimensions } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import { addEmployee } from '../services/masters';
-import BottomTabNavigation from '../Components/BottomNavBar';
 
 var width = Dimensions.get('window').width;
 
-const EmployeeForm = () => {
+const EmployeeForm = ({ navigation }) => {
   const [selectedRole, setSelectedRole] = useState('');
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [mobile, setMobile] = useState('');
 
+  const handleEmployeeSubmit = () => {
+    addEmployee({ name: name, role: selectedRole, email: email, mobile: mobile });
+  };
+
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>Employee</Text>
-
       <View style={styles.inputContainer}>
         <Text style={styles.label}>Name</Text>
         <TextInput style={styles.input} placeholder="Enter name" onChangeText={(text) => setName(text)} />
@@ -48,29 +49,26 @@ const EmployeeForm = () => {
         <TextInput style={styles.input} placeholder="Enter mobile number" keyboardType='numeric' onChangeText={(text) => setMobile(text)} />
       </View>
 
-      <Button title="Submit" onPress={() => {
-        addEmployee({ name: name, role: selectedRole, email: email, mobile: mobile });
-      }} style={styles.button} />
+      <View style={styles.buttonContainer}>
+        <Button title="Submit" onPress={handleEmployeeSubmit} color="#ee2524" />
+      </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
+    justifyContent: 'start',
+    alignItems: 'center',
+    backgroundColor: 'white',
     padding: 20,
-    backgroundColor: '#f8f9fa',
-    borderRadius: 10,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 5,
-    elevation: 3,
+
   },
   header: {
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 20,
-    textAlign: 'center',
   },
   inputContainer: {
     width: width - 50,
@@ -99,8 +97,8 @@ const styles = StyleSheet.create({
     height: 50,
     width: '100%',
   },
-  button: {
-    marginTop: 20,
+  buttonContainer: {
+    width: width - 50,
   },
 });
 

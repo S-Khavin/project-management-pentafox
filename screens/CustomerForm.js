@@ -1,8 +1,6 @@
-import { View, Text, TextInput, Button, StyleSheet, Dimensions } from 'react-native';
-import { Picker } from '@react-native-picker/picker';
-import { addCustomers } from '../services/masters';
-import BottomTabNavigation from '../Components/BottomNavBar';
 import React, { useState } from 'react';
+import { View, Text, TextInput, Button, StyleSheet, Dimensions } from 'react-native';
+import { addCustomers } from '../services/masters';
 
 var width = Dimensions.get('window').width;
 
@@ -13,11 +11,12 @@ const CustomerForm = () => {
   const [mobile, setMobile] = useState('');
   const [address, setAddress] = useState('');
 
+  const handleSubmit = () => {
+    addCustomers({ name: name, gst: gst, email: email, mobile: mobile, address: address });
+  };
+
   return (
     <View style={styles.container}>
-    <View style={styles.innerContainer}>
-      <Text style={styles.header}>Customer</Text>
-
       <View style={styles.inputContainer}>
         <Text style={styles.label}>Name</Text>
         <TextInput style={styles.input} placeholder="Enter name" onChangeText={(text) => setName(text)} />
@@ -43,12 +42,8 @@ const CustomerForm = () => {
         <TextInput style={styles.input} placeholder="Enter mobile number" keyboardType='numeric' onChangeText={(text) => setMobile(text)} />
       </View>
 
-      <Button title="Submit" onPress={() => {
-        addCustomers({ name: name, gst: gst, email: email, mobile: mobile, address: address });
-      }} style={styles.button} />
-      </View>
-      <View style={styles.navbar}>
-      <BottomTabNavigation />
+      <View style={styles.buttonContainer}>
+        <Button title="Submit" onPress={handleSubmit} color="#ee2524" />
       </View>
     </View>
   );
@@ -57,23 +52,15 @@ const CustomerForm = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'space-between',
-    backgroundColor: '#f8f9fa',
-    borderRadius: 10,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 5,
-    elevation: 3,
-  },
-  innerContainer: {
+    justifyContent: 'start',
+    alignItems: 'center',
+    backgroundColor: 'white',
     padding: 20,
   },
   header: {
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 20,
-    textAlign: 'center',
   },
   inputContainer: {
     width: width - 50,
@@ -92,12 +79,9 @@ const styles = StyleSheet.create({
     fontSize: 16,
     backgroundColor: '#fff',
   },
-  button: {
-    marginTop: 20,
+  buttonContainer: {
+    width: width - 50,
   },
-  navbar: {
-    justifyContent: 'center',
-  }
 });
 
 export default CustomerForm;
