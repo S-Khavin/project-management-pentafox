@@ -1,5 +1,5 @@
 import { db } from "../firebaseConfig";
-import { collection, getDocs, where, query, addDoc } from "firebase/firestore";
+import { collection, getDocs, where, query, addDoc, updateDoc, doc } from "firebase/firestore";
 
 export async function getCustomerDetails() {
     try {
@@ -50,9 +50,12 @@ export async function getEmployeesDetails() {
 
 
 
-export async function addProject({ c_gst, c_name, c_email, c_mobile, c_address, p_name, p_description, p_date, p_owner, p_team, p_status, p_type }) {
+export async function addOrUpdateProject({ projectId, c_gst, c_name, c_email, c_mobile, c_address, p_name, p_description, p_date, p_owner, p_team, p_status, p_type }) {
     try {
-        const docRef = await addDoc(collection(db, "Projects"), {
+        // Set default owner if not provided
+        const owner = p_owner || 'Sriram Srinivasan';
+
+        const projectData = {
             customer_gst: c_gst,
             customer_name: c_name,
             customer_email: c_email,
@@ -60,15 +63,24 @@ export async function addProject({ c_gst, c_name, c_email, c_mobile, c_address, 
             customer_address: c_address,
             project_name: p_name,
             project_description: p_description,
-            project_start_date: p_date,
-            project_owner: p_owner,
+            project_start_date: p_date instanceof Date && !isNaN(p_date) ? p_date : new Date(), // Validate date
+            project_owner: owner,
             project_team: p_team,
             project_status: p_status,
             project_type: p_type,
-        });
-        console.log("Document written with ID: ", docRef.id);
+        };
+
+        if (projectId) {
+            // Update existing project
+            await updateDoc(doc(db, `Projects/${projectId}`), projectData);
+            console.log("Document updated");
+        } else {
+            // Add new project
+            const docRef = await addDoc(collection(db, "Projects"), projectData);
+            console.log("Document written with ID: ", docRef.id);
+        }
     } catch (e) {
-        console.error("Error adding document: ", e);
+        console.error("Error adding/updating document: ", e);
     }
 }
 

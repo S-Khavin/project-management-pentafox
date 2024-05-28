@@ -1,34 +1,44 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, Dimensions, Platform } from 'react-native';
+import { View, Text, TextInput, Button, StyleSheet, Dimensions, Platform, ScrollView } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
-import { addEmployee } from '../services/masters';
 import MultiSelect from 'react-native-multiple-select';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import { addProject, getEmployeesDetails } from '../services/project';
+import { addOrUpdateProject, getEmployeesDetails } from '../services/project'; // Ensure this path is correct
 
-var width = Dimensions.get('window').width
-
-const ProjectForm = ({ c_name, c_email, c_gst, c_mobile, c_address }) => {
-    const [p_name, setName] = useState('');
-    const [p_description, setDescription] = useState('');
-    const [p_date, setDate] = useState(new Date());
+const ProjectForm = ({ route, navigation }) => {
+    const { project, isEditing } = route.params || {};
+    const [p_name, setName] = useState(project?.name || '');
+    const [p_description, setDescription] = useState(project?.description || '');
+    const [p_date, setDate] = useState(new Date(project?.start_date || Date.now()));
     const [open, setOpen] = useState(false);
-    const [p_owner, setOwner] = useState('');
-    const [employees, setEmployees] = useState([])
-    const [p_team, setSelectedEmployees] = useState([]);
+    const [p_owner, setOwner] = useState(project?.owner || '');
+    const [employees, setEmployees] = useState([]);
+    const [p_team, setSelectedEmployees] = useState(project?.team || []);
     const multiSelect = useRef(null);
-    const [p_status, setStatus] = useState('');
-    const [p_type, setType] = useState('');
+    const [p_status, setStatus] = useState(project?.status || '');
+    const [p_type, setType] = useState(project?.type || '');
+
+    
+    useEffect(() => {
+        if (project) {
+            setName(project.name);
+            setDescription(project.description);
+            setDate(new Date(project.start_date));
+            setOwner(project.owner);
+            setSelectedEmployees(project.team);
+            setStatus(project.status);
+            setType(project.type);
+        }
+    }, [project]);
+
 
     useEffect(() => {
         async function fetchEmployees() {
             const employeesData = await getEmployeesDetails();
             setEmployees(employeesData);
-            console.log(employeesData);
         }
         fetchEmployees();
-    }, [])
-
+    }, []);
 
     const showDatePicker = () => {
         setOpen(true);
@@ -49,12 +59,17 @@ const ProjectForm = ({ c_name, c_email, c_gst, c_mobile, c_address }) => {
     };
 
     return (
-        <View style={styles.container}>
+        <ScrollView style={styles.container}>
             <Text style={styles.header}>Project Details</Text>
 
             <View style={styles.inputContainer}>
                 <Text style={styles.label}>Name</Text>
-                <TextInput style={styles.input} placeholder="Project p_name" onChangeText={(text) => setName(text)} />
+                <TextInput
+                    style={styles.input}
+                    placeholder="Project Name"
+                    value={p_name}
+                    onChangeText={(text) => setName(text)}
+                />
             </View>
 
             <View style={styles.inputContainer}>
@@ -62,8 +77,13 @@ const ProjectForm = ({ c_name, c_email, c_gst, c_mobile, c_address }) => {
                 <TextInput
                     editable
                     multiline
-                    numberOfLines={5} maxLength={200}
-                    style={styles.input} placeholder="Project Description" onChangeText={(text) => setDescription(text)} />
+                    numberOfLines={5}
+                    maxLength={200}
+                    style={styles.input}
+                    placeholder="Project Description"
+                    value={p_description}
+                    onChangeText={(text) => setDescription(text)}
+                />
             </View>
 
             <Button title="Pick Start Date" onPress={showDatePicker} />
@@ -71,7 +91,7 @@ const ProjectForm = ({ c_name, c_email, c_gst, c_mobile, c_address }) => {
                 <DateTimePicker
                     testID="dateTimePicker"
                     value={p_date}
-                    mode="p_date"
+                    mode="date"
                     is24Hour={true}
                     display={Platform.OS === 'ios' ? 'spinner' : 'default'}
                     onChange={handleDateChange}
@@ -138,59 +158,66 @@ const ProjectForm = ({ c_name, c_email, c_gst, c_mobile, c_address }) => {
             </View>
 
             <Button title="Submit" onPress={() => {
-                addProject({ c_name: c_name, c_email: c_email, c_gst: c_gst, c_mobile: c_mobile,c_address: c_address, p_name: p_name, p_date: p_date, p_description: p_description, p_owner: p_owner, p_status: p_status, p_team: p_team, p_type: p_type })
-            }} style={styles.button} />
-        </View>
+    const projectData = {
+        projectId: project.id, // If editing existing project
+        c_gst: '', // Add customer GST value here
+        c_name: '', // Add customer name value here
+        c_email: '', // Add customer email value here
+        c_mobile: '', // Add customer mobile value here
+        c_address: '', // Add customer address value here
+        p_name,
+        p_description,
+        p_date,
+        p_owner,
+        p_team,
+        p_status,
+        p_type
+    };
+
+    addOrUpdateProject(projectData);
+    navigation.goBack();
+}} />
+        </ScrollView>
     );
 };
 
 const styles = StyleSheet.create({
     container: {
+        flex: 1,
         padding: 20,
-        backgroundColor: '#f8f9fa',
-        borderRadius: 10,
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.2,
-        shadowRadius: 5,
-        elevation: 3,
+        backgroundColor: '#f0f0f0',
     },
     header: {
         fontSize: 24,
         fontWeight: 'bold',
         marginBottom: 20,
-        textAlign: 'center',
     },
     inputContainer: {
-        width: width - 50,
-        marginBottom: 15,
+        marginBottom: 20,
     },
     label: {
         fontSize: 16,
-        marginBottom: 5,
-        color: '#333',
+        fontWeight: 'bold',
+        marginBottom: 10,
     },
     input: {
+        backgroundColor: '#fff',
+        padding: 10,
+        borderRadius: 5,
         borderWidth: 1,
         borderColor: '#ccc',
-        borderRadius: 5,
-        padding: 10,
-        fontSize: 16,
-        backgroundColor: '#fff',
+        marginBottom: 10,
     },
     pickerContainer: {
+        backgroundColor: '#fff',
+        borderRadius: 5,
         borderWidth: 1,
         borderColor: '#ccc',
-        borderRadius: 5,
-        overflow: 'hidden',
     },
     picker: {
         height: 50,
         width: '100%',
     },
-    button: {
-        marginTop: 20,
-    }
 });
 
 export default ProjectForm;

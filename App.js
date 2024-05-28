@@ -30,11 +30,36 @@
 // });
 
 
+// import React from 'react';
+// import DrawerNavigator from './services/Navigation';
+
+// const App = () => {
+//     return <DrawerNavigator />;
+// };
+
+// export default App;
+
+
+// App.js
 import React from 'react';
-import DrawerNavigator from './services/Navigation';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import Dashboard from './screens/dashboard';
+import ProjectForm from './screens/ProjectForm';
+
+
+const Stack = createStackNavigator();
 
 const App = () => {
-    return <DrawerNavigator />;
+    return (
+        <NavigationContainer>
+            <Stack.Navigator initialRouteName="Dashboard">
+                <Stack.Screen name="Dashboard" component={Dashboard} />
+                <Stack.Screen name="ProjectForm" component={ProjectForm} />
+            </Stack.Navigator>
+        </NavigationContainer>
+    );
 };
 
 export default App;
+
