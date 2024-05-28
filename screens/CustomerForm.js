@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, Dimensions } from 'react-native';
+import { Picker } from '@react-native-picker/picker';
 import { addCustomers } from '../services/masters';
+import BottomTabNavigation from '../Components/BottomNavBar';
+import React, { useState } from 'react';
 
-var width = Dimensions.get('window').width
+var width = Dimensions.get('window').width;
 
 const CustomerForm = () => {
   const [name, setName] = useState('');
@@ -11,9 +13,9 @@ const CustomerForm = () => {
   const [mobile, setMobile] = useState('');
   const [address, setAddress] = useState('');
 
-
   return (
     <View style={styles.container}>
+    <View style={styles.innerContainer}>
       <Text style={styles.header}>Customer</Text>
 
       <View style={styles.inputContainer}>
@@ -23,7 +25,7 @@ const CustomerForm = () => {
 
       <View style={styles.inputContainer}>
         <Text style={styles.label}>GST</Text>
-        <TextInput style={styles.input} placeholder="Enter name" onChangeText={(text) => setGst(text)} />
+        <TextInput style={styles.input} placeholder="Enter GST" onChangeText={(text) => setGst(text)} />
       </View>
 
       <View style={styles.inputContainer}>
@@ -33,7 +35,7 @@ const CustomerForm = () => {
 
       <View style={styles.inputContainer}>
         <Text style={styles.label}>Address</Text>
-        <TextInput style={styles.input} placeholder="Enter email" keyboardType='email-address' onChangeText={(text) => setAddress(text)} />
+        <TextInput style={styles.input} placeholder="Enter address" onChangeText={(text) => setAddress(text)} />
       </View>
 
       <View style={styles.inputContainer}>
@@ -42,15 +44,20 @@ const CustomerForm = () => {
       </View>
 
       <Button title="Submit" onPress={() => {
-        addCustomers({ name: name, gst: gst, email: email, mobile: mobile, address: address })
+        addCustomers({ name: name, gst: gst, email: email, mobile: mobile, address: address });
       }} style={styles.button} />
+      </View>
+      <View style={styles.navbar}>
+      <BottomTabNavigation />
+      </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    padding: 20,
+    flex: 1,
+    justifyContent: 'space-between',
     backgroundColor: '#f8f9fa',
     borderRadius: 10,
     shadowColor: '#000',
@@ -58,6 +65,9 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowRadius: 5,
     elevation: 3,
+  },
+  innerContainer: {
+    padding: 20,
   },
   header: {
     fontSize: 24,
@@ -82,18 +92,11 @@ const styles = StyleSheet.create({
     fontSize: 16,
     backgroundColor: '#fff',
   },
-  pickerContainer: {
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 5,
-    overflow: 'hidden',
-  },
-  picker: {
-    height: 50,
-    width: '100%',
-  },
   button: {
     marginTop: 20,
+  },
+  navbar: {
+    justifyContent: 'center',
   }
 });
 

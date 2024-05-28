@@ -5,8 +5,7 @@ import { addEmployee } from '../services/masters';
 import MultiSelect from 'react-native-multiple-select';
 import DateTimePicker from '@react-native-community/datetimepicker';
 
-var width = Dimensions.get('window').width
-
+var width = Dimensions.get('window').width;
 
 const employees = [{
     id: '92iijs7yta',
@@ -61,11 +60,11 @@ const ProjectForm = () => {
         const currentDate = selectedDate || date;
         setDate(currentDate);
         hideDatePicker();
-      };
+    };
+
     const onSelectedItemsChange = (selectedEmpoloyees) => {
         setSelectedEmployees(selectedEmpoloyees);
     };
-
 
     return (
         <View style={styles.container}>
@@ -79,10 +78,14 @@ const ProjectForm = () => {
             <View style={styles.inputContainer}>
                 <Text style={styles.label}>Description</Text>
                 <TextInput
-                        editable
-                        multiline                
-                    numberOfLines={5} maxLength={200}
-                    style={styles.input} placeholder="Project Description" onChangeText={(text) => setDescription(text)} />
+                    editable
+                    multiline
+                    numberOfLines={5}
+                    maxLength={200}
+                    style={styles.input}
+                    placeholder="Project Description"
+                    onChangeText={(text) => setDescription(text)}
+                />
             </View>
 
             <Button title="Open" onPress={showDatePicker} />
@@ -113,20 +116,18 @@ const ProjectForm = () => {
             </View>
 
             <MultiSelect
-                // hideTags
                 items={employees}
                 uniqueKey="id"
-                ref={(component) => { this.multiSelect = component }}
+                ref={multiSelect}
                 onSelectedItemsChange={onSelectedItemsChange}
                 selectedItems={selectedEmpoloyees}
-                selectText="Pick Employees "
+                selectText="Pick Employees"
                 searchInputPlaceholderText="Search Items..."
                 onChangeInput={(text) => console.log(text)}
             />
             <View>
                 {multiSelect.current && multiSelect.current.getSelectedItemsExt(selectedEmpoloyees)}
             </View>
-
 
             <View style={styles.inputContainer}>
                 <Text style={styles.label}>Project Status</Text>
@@ -158,9 +159,7 @@ const ProjectForm = () => {
                 </View>
             </View>
 
-
-            <Button title="Submit" onPress={() => {
-            }} style={styles.button} />
+            <Button title="Submit" onPress={() => {}} style={styles.button} />
         </View>
     );
 };

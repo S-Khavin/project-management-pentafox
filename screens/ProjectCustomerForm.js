@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, Dimensions } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
+import BottomTabNavigation from '../Components/BottomNavBar'
 
 var width = Dimensions.get('window').width
 
@@ -60,6 +61,7 @@ const ProjectCustomerForm = () => {
             <Button title="Continue" onPress={() => {
                 //Navigate to ProjectForm
             }} style={styles.button} />
+
         </View>
     );
 };
