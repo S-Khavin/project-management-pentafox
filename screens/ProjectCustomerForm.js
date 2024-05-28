@@ -6,14 +6,14 @@ import { getCustomerDetails, getSingleCustomerDetails } from '../services/projec
 var width = Dimensions.get('window').width
 
 const ProjectCustomerForm = () => {
-    const [name, setName] = useState('Select Customer');
-    const [gst, setGst] = useState('');
-    const [email, setEmail] = useState('');
-    const [mobile, setMobile] = useState('');
-    const [address, setAddress] = useState('');
+    const [c_name, setName] = useState('Select Customer');
+    const [c_gst, setGst] = useState('');
+    const [c_email, setEmail] = useState('');
+    const [c_mobile, setMobile] = useState('');
+    const [c_address, setAddress] = useState('');
     const [customers, setCustomers] = useState([]);
     const [customer, setCustomer] = useState([]);
-    console.log(name);
+    console.log(c_name);
     useEffect(() => {
         async function fetchCustomers() {
             const customerData = await getCustomerDetails();
@@ -25,16 +25,16 @@ const ProjectCustomerForm = () => {
 
     useEffect(() => {
         async function fetchCustomer() {
-            if (name !== 'Select Customer') {
-                const singleCustomerData = await getSingleCustomerDetails(name);
+            if (c_name !== 'Select Customer') {
+                const singleCustomerData = await getSingleCustomerDetails(c_name);
                 setCustomer(()=>{return([...singleCustomerData])});
-                console.log(singleCustomerData?.[0].gst);
-                setGst(singleCustomerData?.[0]?.gst);
-                setEmail(singleCustomerData?.[0]?.email);
-                setAddress(singleCustomerData?.[0]?.address);
-                setMobile(singleCustomerData?.[0]?.mobile);
-                // if(!!singleCustomerData?.[0]?.gst){
-                //     setGst(singleCustomerData?.[0]?.gst);
+                console.log(singleCustomerData?.[0].c_gst);
+                setGst(singleCustomerData?.[0]?.c_gst);
+                setEmail(singleCustomerData?.[0]?.c_email);
+                setAddress(singleCustomerData?.[0]?.c_address);
+                setMobile(singleCustomerData?.[0]?.c_mobile);
+                // if(!!singleCustomerData?.[0]?.c_gst){
+                //     setGst(singleCustomerData?.[0]?.c_gst);
                 //     console.log('llll',singleCustomerData)
                 // }
             } else {
@@ -45,7 +45,7 @@ const ProjectCustomerForm = () => {
             }
         }
         fetchCustomer();
-    }, [name])
+    }, [c_name])
     return (
         <View style={styles.container}>
             <Text style={styles.header}>Project Customer</Text>
@@ -53,13 +53,13 @@ const ProjectCustomerForm = () => {
                 <Text style={styles.label}>Name</Text>
                 <View style={styles.pickerContainer}>
                     <Picker
-                        selectedValue={name}
+                        selectedValue={c_name}
                         onValueChange={(itemValue) => setName(itemValue)}
                         style={styles.picker}
                     >
                         <Picker.Item label="Select Customer" value="Select Customer" />
                         {customers.map((customer, index) => {
-                            return <Picker.Item key={index} label={customer.name} value={customer.name} />
+                            return <Picker.Item key={index} label={customer.c_name} value={customer.c_name} />
                         })
                         }
                     </Picker>
@@ -69,22 +69,22 @@ const ProjectCustomerForm = () => {
 
             <View style={styles.inputContainer}>
                 <Text style={styles.label}>GST</Text>
-                <TextInput style={styles.input} placeholder="None" value={gst} editable={false} />
+                <TextInput style={styles.input} placeholder="None" value={c_gst} editable={false} />
             </View>
 
             <View style={styles.inputContainer}>
                 <Text style={styles.label}>Email</Text>
-                <TextInput style={styles.input} placeholder="None" value={email} editable={false} />
+                <TextInput style={styles.input} placeholder="None" value={c_email} editable={false} />
             </View>
 
             <View style={styles.inputContainer}>
                 <Text style={styles.label}>Address</Text>
-                <TextInput style={styles.input} placeholder="None" value={address} editable={false} />
+                <TextInput style={styles.input} placeholder="None" value={c_address} editable={false} />
             </View>
 
             <View style={styles.inputContainer}>
                 <Text style={styles.label}>Mobile</Text>
-                <TextInput style={styles.input} placeholder="None" value={mobile} editable={false} />
+                <TextInput style={styles.input} placeholder="None" value={c_mobile} editable={false} />
             </View>
 
             <Button title="Continue" onPress={() => {

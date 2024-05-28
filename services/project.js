@@ -51,13 +51,14 @@ export async function getEmployeesDetails() {
 
 
 
-export async function addProject({ c_gst, c_name, c_email, c_mobile, p_name, p_description, p_date, p_owner, p_team, p_status, p_type }) {
+export async function addProject({ c_gst, c_name, c_email, c_mobile, c_address, p_name, p_description, p_date, p_owner, p_team, p_status, p_type }) {
     try {
         const docRef = await addDoc(collection(db, "Projects"), {
             customer_gst: c_gst,
             customer_name: c_name,
             customer_email: c_email,
             customer_mobile: c_mobile,
+            customer_address: c_address,
             project_name: p_name,
             project_description: p_description,
             project_start_date: p_date,

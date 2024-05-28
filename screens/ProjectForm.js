@@ -8,7 +8,7 @@ import { addProject, getEmployeesDetails } from '../services/project';
 
 var width = Dimensions.get('window').width
 
-const ProjectForm = ({ c_name, c_email, c_gst, c_mobile }) => {
+const ProjectForm = ({ c_name, c_email, c_gst, c_mobile, c_address }) => {
     const [p_name, setName] = useState('');
     const [p_description, setDescription] = useState('');
     const [p_date, setDate] = useState(new Date());
@@ -66,7 +66,7 @@ const ProjectForm = ({ c_name, c_email, c_gst, c_mobile }) => {
                     style={styles.input} placeholder="Project Description" onChangeText={(text) => setDescription(text)} />
             </View>
 
-            <Button title="Open" onPress={showDatePicker} />
+            <Button title="Pick Start Date" onPress={showDatePicker} />
             {open && (
                 <DateTimePicker
                     testID="dateTimePicker"
@@ -138,7 +138,7 @@ const ProjectForm = ({ c_name, c_email, c_gst, c_mobile }) => {
             </View>
 
             <Button title="Submit" onPress={() => {
-                addProject({ c_name: c_name, c_email: c_email, c_gst: c_gst, c_mobile: c_mobile, p_name: p_name, p_date: p_date, p_description: p_description, p_owner: p_owner, p_status: p_status, p_team: p_team, p_type: p_type })
+                addProject({ c_name: c_name, c_email: c_email, c_gst: c_gst, c_mobile: c_mobile,c_address: c_address, p_name: p_name, p_date: p_date, p_description: p_description, p_owner: p_owner, p_status: p_status, p_team: p_team, p_type: p_type })
             }} style={styles.button} />
         </View>
     );
