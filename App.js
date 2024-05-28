@@ -10,6 +10,7 @@ export default function App() {
   return (
     <View style={styles.safe_area}>
       <View style={{ flex: 1, alignItems: "center", justifyContent: "center", }}>
+        {/* <ProjectCustomerForm></ProjectCustomerForm> */}
         <ProjectCustomerForm></ProjectCustomerForm>
       </View>
     </View>

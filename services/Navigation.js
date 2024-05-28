@@ -6,6 +6,7 @@ import EmployeeForm from '../screens/EmployeeForm';
 import CustomerForm from '../screens/CustomerForm';
 import ProjectCustomerForm from '../screens/ProjectCustomerForm';
 import BottomTabNavigation from '../Components/BottomNavBar';
+import ProjectForm from '../screens/ProjectForm';
 
 const DrawerNavigator = () => {
     const Drawer = createDrawerNavigator();
@@ -20,7 +21,7 @@ const DrawerNavigator = () => {
         <NavigationContainer>
             <Drawer.Navigator drawerContent={props => <CustomDrawerContent {...props} />}>
                 <Drawer.Screen name="Home" component={DashboardApp} />
-                <Drawer.Screen name="Projects" component={ProjectCustomerForm} />
+                <Drawer.Screen name="Masters" component={ProjectCustomerForm} />
                 <Drawer.Screen name="Employee" component={EmployeeForm} />
                 <Drawer.Screen name="Customer" component={CustomerForm} />
             </Drawer.Navigator>

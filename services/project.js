@@ -1,5 +1,5 @@
 import { db } from "../firebaseConfig";
-import { collection, getDocs, where, query } from "firebase/firestore";
+import { collection, getDocs, where, query, addDoc } from "firebase/firestore";
 
 export async function getCustomerDetails() {
     try {
@@ -38,7 +38,6 @@ export async function getEmployeesDetails() {
         const q = query(collection(db, "Employees"));
         const querySnapshot = await getDocs(q);
         const customers = [];
-
         querySnapshot.forEach((doc) => {
             customers.push({ id: doc.id, ...doc.data() });
         });

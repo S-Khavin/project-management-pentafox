@@ -2,10 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, Dimensions } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import { getCustomerDetails, getSingleCustomerDetails } from '../services/project';
+import { useRoute } from "@react-navigation/native"
 
 var width = Dimensions.get('window').width
 
 const ProjectCustomerForm = () => {
+
     const [c_name, setName] = useState('Select Customer');
     const [c_gst, setGst] = useState('');
     const [c_email, setEmail] = useState('');
@@ -28,11 +30,11 @@ const ProjectCustomerForm = () => {
             if (c_name !== 'Select Customer') {
                 const singleCustomerData = await getSingleCustomerDetails(c_name);
                 setCustomer(()=>{return([...singleCustomerData])});
-                console.log(singleCustomerData?.[0].c_gst);
-                setGst(singleCustomerData?.[0]?.c_gst);
-                setEmail(singleCustomerData?.[0]?.c_email);
-                setAddress(singleCustomerData?.[0]?.c_address);
-                setMobile(singleCustomerData?.[0]?.c_mobile);
+                console.log(singleCustomerData?.[0].gst);
+                setGst(singleCustomerData?.[0]?.gst);
+                setEmail(singleCustomerData?.[0]?.email);
+                setAddress(singleCustomerData?.[0]?.address);
+                setMobile(singleCustomerData?.[0]?.mobile);
                 // if(!!singleCustomerData?.[0]?.c_gst){
                 //     setGst(singleCustomerData?.[0]?.c_gst);
                 //     console.log('llll',singleCustomerData)
@@ -59,7 +61,7 @@ const ProjectCustomerForm = () => {
                     >
                         <Picker.Item label="Select Customer" value="Select Customer" />
                         {customers.map((customer, index) => {
-                            return <Picker.Item key={index} label={customer.c_name} value={customer.c_name} />
+                            return <Picker.Item key={index} label={customer.name} value={customer.name} />
                         })
                         }
                     </Picker>

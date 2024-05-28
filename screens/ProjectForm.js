@@ -99,7 +99,7 @@ const ProjectForm = ({ c_name, c_email, c_gst, c_mobile, c_address }) => {
                 ref={multiSelect}
                 onSelectedItemsChange={onSelectedItemsChange}
                 selectedItems={p_team}
-                selectText="Pick Employees "
+                selectText="Pick Employees"
                 searchInputPlaceholderText="Search Items..."
                 onChangeInput={(text) => console.log(text)}
             />
